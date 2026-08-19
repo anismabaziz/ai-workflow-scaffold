@@ -65,8 +65,8 @@ npx skills update                   # refresh installed skills from the lock fil
 npx skills find <query>             # search the ecosystem
 ```
 
-The installed skills come from `mattpocock/skills`, `vercel-labs/skills`, and
-`cursor/plugins`. The lock file pins what is installed, so anyone cloning the
+The installed skills come from `mattpocock/skills`, `vercel-labs/skills`,
+and `poteto/noodle`. The lock file pins what is installed, so anyone cloning the
 repo gets the same versions and can refresh them consistently.
 
 ## Bootstrapping a new project

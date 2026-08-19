@@ -33,9 +33,12 @@ codebase and are not committed. Everything an agent may read or write inside
 
 ## Skills
 
-The skills the workflow relies on are vendored in `skills/`, so anyone who
-clones this repo has them. Each folder is a skill: a `SKILL.md` plus optional
-resources.
+The skills the workflow relies on are installed and managed with the
+[Skills CLI](https://skills.sh/) (`npx skills`). They are committed in
+`.agents/skills/` (universal format) and symlinked under `.claude/skills/` for
+Claude Code, so anyone who clones this repo has them. `skills-lock.json`
+records each skill's source and pinned version, and `npx skills update`
+refreshes them.
 
 | Skill | Purpose |
 |---|---|
@@ -52,23 +55,19 @@ resources.
 | `improve-codebase-architecture` | Scan for deepening opportunities and grill through them |
 | `tdd` | Test-driven development |
 
-### Installing the skills for your agent
+### Managing the skills
 
-To make a skill available to your agent tool, copy or symlink its folder into
-the skills directory your agent reads:
-
-- **Claude Code (project-level):** `.claude/skills/<skill>`
-- **Claude Code (user-level):** `~/.claude/skills/<skill>`
-- **opencode (project-level):** `.opencode/skills/<skill>`
-
-For example:
+Install, update, or add skills from this project's root:
 
 ```bash
-ln -s "$PWD/skills/unslop" .claude/skills/unslop
+npx skills add <owner/repo@skill>   # add a skill (installs into .agents/skills)
+npx skills update                   # refresh installed skills from the lock file
+npx skills find <query>             # search the ecosystem
 ```
 
-Your agent then loads `unslop` automatically, and AGENTS.md can reference it
-by name.
+The installed skills come from `mattpocock/skills`, `vercel-labs/skills`, and
+`cursor/plugins`. The lock file pins what is installed, so anyone cloning the
+repo gets the same versions and can refresh them consistently.
 
 ## Bootstrapping a new project
 
@@ -91,6 +90,10 @@ by name.
 6. Start with `/to-spec`, then `/to-tickets`, then pick a ticket and create
    your branch.
 
+Skills ship with the repo, but if you only copied the workflow files (not the
+skill folders), run `npx skills add` for each one from the
+[Skills](#skills) section — `skills-lock.json` lists the exact sources.
+
 ## Structure
 
 ```text
@@ -99,7 +102,9 @@ AGENTS.md                  Agent workflow rules (tickets, specs, PR bodies, revi
   pull_request_template.md Pull request body format
   workflows/
     secret-scan.yml        Gitleaks secret scan
-skills/                    Vendored agent skills (12)
+.agents/skills/            Skills, universal format, managed via npx (12)
+.claude/skills/            Symlinks to .agents/skills for Claude Code
+skills-lock.json           Pinned skill sources and versions
 examples/                  Example artifacts showing the exact formats
   tickets/                 One ticket per file
   spec/                    Spec format
@@ -115,5 +120,5 @@ examples/                  Example artifacts showing the exact formats
 ## Contributing to this scaffold
 
 If the workflow changes, update `AGENTS.md`, the PR template and the example
-artifacts together, then refresh the vendored skills. Apply the `unslop` skill
-to any human-facing text.
+artifacts together, then refresh the skills with `npx skills update`. Apply
+the `unslop` skill to any human-facing text.

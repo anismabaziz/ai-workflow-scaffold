@@ -2,10 +2,12 @@
 
 ## Ignore rules
 
-`.plan/` holds planning artifacts, not codebase context. Agents do not treat
-them as product code. What agents may read and write inside `.plan/` is defined
-by the workflows below (tickets, specs, PR bodies, review replies, blog
-drafts); everything else in `.plan/` stays untouched.
+`.plan/` and this file (`AGENTS.md`) are planning artifacts, not codebase
+context, and neither is committed (both stay local to the machine). Agents do
+not treat them as product code. What agents may read and write inside `.plan/`
+is defined by the workflows below (tickets, specs, PR bodies, review replies,
+blog drafts); everything else in `.plan/` stays untouched. The committed
+`examples/` folder shows the exact formats these artifacts use.
 
 ## Workflow for refactors and features
 
@@ -45,8 +47,8 @@ the translations.
 
 Project blog writing lives in `.plan/blog/`, one `.md` file per post named
 `<day>-<slug>.md`. Drafts are not product code; an agent may help write and
-edit them on request, using the template in `.plan/blog/README.md`. Apply the
-`unslop` skill to anything that will be published.
+edit them on request, using the template in `examples/blog/README.md`. Apply
+the `unslop` skill to anything that will be published.
 
 ## Writing
 

@@ -4,7 +4,7 @@
   "description": "Scaffold the agent-driven development workflow into a project",
   "type": "module",
   "bin": {
-    "create-ai-workflow": "./bin/create-ai-workflow.mjs"
+    "create-ai-workflow": "bin/create-ai-workflow.mjs"
   },
   "files": [
     "bin",
@@ -15,6 +15,14 @@
   ],
   "engines": {
     "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anismabaziz/ai-workflow-scaffold.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "license": "MIT"
 }

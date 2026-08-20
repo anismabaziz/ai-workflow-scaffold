@@ -1,0 +1,20 @@
+{
+  "name": "create-ai-workflow",
+  "version": "0.1.0",
+  "description": "Scaffold the agent-driven development workflow into a project",
+  "type": "module",
+  "bin": {
+    "create-ai-workflow": "./bin/create-ai-workflow.mjs"
+  },
+  "files": [
+    "bin",
+    "AGENTS.md",
+    "examples",
+    ".github",
+    "skills-lock.json"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

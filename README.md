@@ -8,6 +8,21 @@ This scaffold has no application code. It ships the workflow rules, the agent
 skills, the pull-request template, the secret scan, and example artifacts in
 the exact formats the workflow produces.
 
+## Quick start
+
+Run the scaffold inside your project directory:
+
+```bash
+npx create-ai-workflow
+```
+
+This copies `AGENTS.md`, the `examples/` artifacts, the `.github/` workflow and
+PR template, and `skills-lock.json`, creates the `.plan/` structure, excludes
+`.plan/` from git, and installs the skills for the universal and Claude Code
+agents. Pass a directory to scaffold somewhere else: `npx create-ai-workflow
+./subdir`. Flags: `--force` (overwrite existing files), `--no-skills` (skip
+skill install), `--no-git` (leave git alone), `-y` (skip prompts).
+
 ## The workflow at a glance
 
 1. **Spec.** When an idea or issue needs shaping, `/to-spec` turns the
@@ -72,6 +87,10 @@ gets the same versions and `npx skills update` bumps them in one go.
 
 ## Bootstrapping a new project
 
+The scaffold itself is a template you run with
+[`create-ai-workflow`](#quick-start). To set up a project without the CLI,
+copy the files manually:
+
 1. Copy the scaffold into the new project directory (or use it as a GitHub
    template).
 2. Keep `AGENTS.md` and create the local planning structure:
@@ -94,11 +113,15 @@ gets the same versions and `npx skills update` bumps them in one go.
 
 Skills ship with the repo. If you only copied the workflow files, not the
 skill folders, run `npx skills add` for each skill in the
-[Skills](#skills) section. `skills-lock.json` lists the exact sources.
+[Skills](#skills) section. `skills-lock.json` lists the exact sources. The
+`create-ai-workflow` CLI does all of this for you.
 
 ## Structure
 
 ```text
+package.json               npm package: npx create-ai-workflow
+bin/
+  create-ai-workflow.mjs   CLI that scaffolds the workflow into a project
 AGENTS.md                  Agent workflow rules (tickets, specs, PR bodies, review replies)
 .github/
   pull_request_template.md Pull request body format

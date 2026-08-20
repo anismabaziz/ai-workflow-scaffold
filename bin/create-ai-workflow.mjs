@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, join, basename } from 'node:path';
+import { dirname, resolve, join, basename, relative } from 'node:path';
 import { existsSync, cpSync, mkdirSync, symlinkSync, readFileSync, appendFileSync, lstatSync, readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
@@ -22,6 +22,7 @@ const PLANNING_DIRS = ['tickets', 'spec', 'pull-requests', 'review-replies', 'bl
 
 const FILES = ['AGENTS.md', 'skills-lock.json'];
 const DIRS = ['examples', '.github'];
+const SKIPPED_FILES = ['workflows/publish.yml'];
 
 function log(msg) {
   process.stdout.write(`${msg}\n`);
@@ -47,8 +48,28 @@ function copyScaffold(target) {
       log(`  skip  ${dir}/ (exists, use --force to overwrite)`);
       continue;
     }
-    cpSync(src, dest, { recursive: true, force: true });
+    copyDirFiltered(src, dest, SKIPPED_FILES);
     log(`  copy  ${dir}/`);
+  }
+}
+
+function copyDirFiltered(src, dest, skipped) {
+  copyDirFilteredRec(src, dest, skipped, src);
+}
+
+function copyDirFilteredRec(src, dest, skipped, root) {
+  const rel = (p) => relative(root, p);
+  if (!existsSync(dest)) mkdirSync(dest, { recursive: true });
+  for (const entry of readdirSync(src)) {
+    const s = join(src, entry);
+    const r = rel(s);
+    if (skipped.includes(r)) continue;
+    const d = join(dest, entry);
+    if (lstatSync(s).isDirectory()) {
+      copyDirFilteredRec(s, d, skipped, root);
+    } else {
+      cpSync(s, d, { force: true });
+    }
   }
 }
 

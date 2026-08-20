@@ -1,6 +1,6 @@
 {
   "name": "create-ai-workflow",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Scaffold the agent-driven development workflow into a project",
   "type": "module",
   "bin": {

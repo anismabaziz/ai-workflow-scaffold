@@ -5,8 +5,8 @@
 `.plan/` and this file (`AGENTS.md`) are planning artifacts, not codebase
 context, and neither is committed (both stay local to the machine). Agents do
 not treat them as product code. What agents may read and write inside `.plan/`
-is defined by the workflows below (tickets, specs, PR bodies, review replies);
-everything else in `.plan/` stays untouched.
+is defined by the workflows below (tickets, specs, PR bodies, review replies,
+blog drafts); everything else in `.plan/` stays untouched.
 
 ## Workflow for refactors and features
 
@@ -41,6 +41,13 @@ every inline review comment. After each comment, leave a reserved section for
 its reply. When a ticket that resolves the comment is implemented, write the
 reply in that reserved section. Apply the `unslop` skill to the replies and to
 the translations.
+
+## Blog drafts
+
+Project blog writing lives in `.plan/blog/`, one `.md` file per post named
+`<day>-<slug>.md`. Drafts are not product code; an agent may help write and
+edit them on request, using the template in `.plan/blog/README.md`. Apply the
+`unslop` skill to anything that will be published.
 
 ## Writing
 

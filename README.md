@@ -29,7 +29,8 @@ the exact formats the workflow produces.
 
 Planning artifacts stay local: `.plan/` and `AGENTS.md` are not part of the
 codebase and are not committed. Everything an agent may read or write inside
-`.plan/` is defined in `AGENTS.md`.
+`.plan/` is defined in `AGENTS.md`; the `examples/` folder ships the exact
+formats.
 
 ## Skills
 
@@ -76,12 +77,13 @@ gets the same versions and `npx skills update` bumps them in one go.
 2. Keep `AGENTS.md` and create the local planning structure:
 
    ```bash
-   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies
+   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/blog
    ```
 
 3. If you keep `AGENTS.md` and `.plan/` out of git, exclude them from version
    control (for example in `.git/info/exclude`). Do not commit planning
-   artifacts as product code.
+   artifacts as product code. The `examples/` folder shows the exact formats
+   these artifacts use.
 4. Add your CI workflow(s) under `.github/workflows/`. The `secret-scan`
    workflow is included and runs gitleaks on pushes and pull requests.
 5. Write the team conventions (branch naming, who merges, definition of done)
@@ -110,11 +112,13 @@ examples/                  Example artifacts showing the exact formats
   spec/                    Spec format
   pull-requests/           PR body format
   review-replies/          Review iteration format
+  blog/                    Blog draft template and sample
 .plan/                     Local-only planning artifacts (not committed)
   tickets/
   spec/
   pull-requests/
   review-replies/
+  blog/
 ```
 
 ## Contributing to this scaffold

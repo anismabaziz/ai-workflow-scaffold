@@ -2,11 +2,10 @@
 
 ## Ignore rules
 
-`.plan/` and this file (`AGENTS.md`) are planning artifacts, not codebase
-context, and neither is committed (both stay local to the machine). Agents do
-not treat them as product code. What agents may read and write inside `.plan/`
-is defined by the workflows below (tickets, specs, PR bodies, review replies,
-blog drafts); everything else in `.plan/` stays untouched.
+`.plan/` holds planning artifacts, not codebase context. Agents do not treat
+them as product code. What agents may read and write inside `.plan/` is defined
+by the workflows below (tickets, specs, PR bodies, review replies, blog
+drafts); everything else in `.plan/` stays untouched.
 
 ## Workflow for refactors and features
 

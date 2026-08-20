@@ -88,7 +88,7 @@ Screenshot of the chips filtering real results is attached in the PR.
 - [ ] The refused or boundary cases concerned were verified.
 - [ ] All my blocking change requests are resolved.
 - [ ] I approve this pull request, or my review status explains what still blocks approval.
-- [ ] Not functional (documentation/configuration only) — justification:
+- [ ] Not functional (documentation/configuration only) (justification):
 
 ## Points of attention for the reviewer
 

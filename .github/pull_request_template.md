@@ -21,7 +21,7 @@ The Reviewer must be distinct from the lead and receive the GitHub review reques
 - **Reviewer:** @
 - **Dependencies:** <!-- closed, or an exception explicitly approved by the PM -->
 
-## Proof of execution — mandatory
+## Proof of execution (mandatory)
 
 <!--
 Give the exact commands and their results. Add depending on the change:
@@ -52,7 +52,7 @@ Commands executed and results:
       it.
 - [ ] The diff contains no change unrelated to the ticket.
 
-## Backend / Python — if relevant
+## Backend / Python (if relevant)
 
 <!-- Run the commands from the backend directory. Adapt to your stack. -->
 
@@ -63,9 +63,9 @@ Commands executed and results:
       failure is identified and linked to an issue in the proof.
 - [ ] Allowed **and** denied access is covered when permissions change.
 - [ ] Migrations are provided and a dry-run check detects nothing missing.
-- [ ] Not applicable — justification:
+- [ ] Not applicable (justification):
 
-## Frontend / TypeScript — if relevant
+## Frontend / TypeScript (if relevant)
 
 <!-- Run the commands from the frontend directory. Adapt to your stack. -->
 
@@ -75,13 +75,13 @@ Commands executed and results:
       failure.
 - [ ] The screen was verified against the real API and shared demo data.
 - [ ] Shared components and styles are reused.
-- [ ] Not applicable — justification:
+- [ ] Not applicable (justification):
 
-## Documentation or configuration — if relevant
+## Documentation or configuration (if relevant)
 
 - [ ] The links, paths, and commands modified were verified.
 - [ ] The examples match the current code and configuration.
-- [ ] Not applicable — justification:
+- [ ] Not applicable (justification):
 
 ## Functional review
 
@@ -93,7 +93,7 @@ Commands executed and results:
 - [ ] All my blocking change requests are resolved.
 - [ ] I approve this pull request, or my review status explains what still
       blocks approval.
-- [ ] Not functional (documentation/configuration only) — justification:
+- [ ] Not functional (documentation/configuration only) (justification):
 
 ## Points of attention for the reviewer
 

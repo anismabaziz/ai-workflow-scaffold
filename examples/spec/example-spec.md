@@ -4,11 +4,11 @@ Source: GitHub issue #41, fictional example project.
 
 ## Context
 
-Recipe search on the community app only matches titles and ingredient text, so a vegan user asking for "chicken" or a gluten-free user searching "bread" get results they cannot eat. The product team agreed on a closed vocabulary of four dietary tags — vegan, gluten-free, dairy-free, nut-free — applied per recipe. This ticket wires those tags through search.
+Recipe search on the community app only matches titles and ingredient text. A vegan user asking for "chicken" or a gluten-free user searching "bread" gets results they cannot eat. The product team agreed on a closed vocabulary of four dietary tags (vegan, gluten-free, dairy-free, nut-free) applied per recipe. This ticket wires those tags through search.
 
-The search endpoint already exists and is fast; the problem is that no field carries dietary intent, and the frontend search page has no way to express it. Tags are the minimal addition that covers the confirmed use cases without building a full dietary system nobody asked for yet.
+The search endpoint already exists and is fast. The problem is that no field carries dietary intent, and the frontend search page has no way to express it. Tags are the minimal addition that covers the confirmed use cases without building a dietary system nobody asked for yet.
 
-## What already exists — reuse, don't rebuild
+## What already exists: reuse, don't rebuild
 
 **1. Search is one endpoint.** `GET /recipes/search` already does full-text matching on title and ingredient text, with relevance sorting and pagination. Filtering adds a parameter to this endpoint; it does not create a second search path.
 
@@ -37,18 +37,18 @@ The search endpoint already exists and is fast; the problem is that no field car
 
 ## Decisions made, to be confirmed by objection
 
-**Decision 1 — tags AND, they don't OR.** "Vegan and nut-free" must return only recipes that are both. OR would hand vegans a page of nut-filled food, which is worse than no filter at all. The UI says "I only eat these" — the query must match that.
+**Decision 1: tags AND, they don't OR.** "Vegan and nut-free" must return only recipes that are both. OR would hand vegans a page of nut-filled food, which is worse than no filter at all. The UI says "I only eat these", so the query must match that.
 
-**Decision 2 — the field is `dietary_tags`, not a reuse of `cuisine`.** Two meanings in one field make the filter untrustworthy and the autocomplete noisy. A new enum field is a few lines and keeps the two concepts separate.
+**Decision 2: the field is `dietary_tags`, not a reuse of `cuisine`.** Two meanings in one field make the filter untrustworthy and the autocomplete noisy. A new enum field is a few lines and keeps the two concepts separate.
 
-**Decision 3 — invalid tags are a 400, not a silent empty page.** A silent empty result hides typos and stale clients; a 400 with the valid vocabulary makes the contract debuggable.
+**Decision 3: invalid tags are a 400, not a silent empty page.** A silent empty result hides typos and stale clients. A 400 with the valid vocabulary makes the contract debuggable.
 
 ## Prohibitions
 
-- don't add a second search endpoint or a custom SQL path — extend the existing one;
-- don't OR the tags — decision 1;
+- don't add a second search endpoint or a custom SQL path. Extend the existing one;
+- don't OR the tags (decision 1);
 - don't invent a fifth tag beyond the confirmed four;
-- don't add tags to the display-only `cuisine` field — decision 2.
+- don't add tags to the display-only `cuisine` field (decision 2).
 
 ## Out of scope
 

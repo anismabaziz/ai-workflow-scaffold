@@ -1,12 +1,12 @@
 # AI Workflow Scaffold
 
 A language-agnostic scaffold for an agent-driven development workflow. Copy
-these files into any new project — TypeScript, Python, or anything else — and
-run the same ticket → spec → branch → PR → review → merge loop on every change.
+these files into any new project (TypeScript, Python, anything else) and run
+the same ticket → spec → branch → PR → review → merge loop on every change.
 
 This scaffold has no application code. It ships the workflow rules, the agent
-skills, the pull-request template, and the secret scan, plus example artifacts
-showing the exact file formats the workflow produces.
+skills, the pull-request template, the secret scan, and example artifacts in
+the exact formats the workflow produces.
 
 ## The workflow at a glance
 
@@ -66,8 +66,8 @@ npx skills find <query>             # search the ecosystem
 ```
 
 The installed skills come from `mattpocock/skills`, `vercel-labs/skills`,
-and `poteto/noodle`. The lock file pins what is installed, so anyone cloning the
-repo gets the same versions and can refresh them consistently.
+and `poteto/noodle`. `skills-lock.json` pins what is installed, so a clone
+gets the same versions and `npx skills update` bumps them in one go.
 
 ## Bootstrapping a new project
 
@@ -80,7 +80,7 @@ repo gets the same versions and can refresh them consistently.
    ```
 
 3. If you keep `AGENTS.md` and `.plan/` out of git, exclude them from version
-   control (for example in `.git/info/exclude`) — do not commit planning
+   control (for example in `.git/info/exclude`). Do not commit planning
    artifacts as product code.
 4. Add your CI workflow(s) under `.github/workflows/`. The `secret-scan`
    workflow is included and runs gitleaks on pushes and pull requests.
@@ -90,9 +90,9 @@ repo gets the same versions and can refresh them consistently.
 6. Start with `/to-spec`, then `/to-tickets`, then pick a ticket and create
    your branch.
 
-Skills ship with the repo, but if you only copied the workflow files (not the
-skill folders), run `npx skills add` for each one from the
-[Skills](#skills) section — `skills-lock.json` lists the exact sources.
+Skills ship with the repo. If you only copied the workflow files, not the
+skill folders, run `npx skills add` for each skill in the
+[Skills](#skills) section. `skills-lock.json` lists the exact sources.
 
 ## Structure
 

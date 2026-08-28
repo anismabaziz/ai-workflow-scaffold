@@ -20,7 +20,7 @@ const targetDir = positional[0] ? resolve(cwd, positional[0]) : cwd;
 
 const PLANNING_DIRS = ['tickets', 'spec', 'pull-requests', 'review-replies', 'blog'];
 
-const FILES = ['AGENTS.md', 'skills-lock.json'];
+const FILES = ['AGENTS.md', 'CONTEXT.md', 'skills-lock.json'];
 const DIRS = ['examples', '.github'];
 const SKIPPED_FILES = ['workflows/publish.yml'];
 

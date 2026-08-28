@@ -9,6 +9,7 @@
   "files": [
     "bin",
     "AGENTS.md",
+    "CONTEXT.md",
     "examples",
     ".github",
     "skills-lock.json"

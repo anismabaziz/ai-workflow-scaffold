@@ -91,25 +91,48 @@ function gitRoot(target) {
   }
 }
 
-function excludePlan(target) {
+function excludePlanningArtifacts(target) {
+  if (noGit) {
+    log('  note  skipped git exclude (--no-git)');
+    return;
+  }
   const root = gitRoot(target);
   if (!root) {
     log('  note  no git repo found; .plan/ not excluded. Init git and run again, or add ".plan/" to your ignore rules.');
     return;
   }
-  if (noGit) {
-    log('  note  skipped git exclude (--no-git)');
-    return;
-  }
   const exclude = join(root, '.git', 'info', 'exclude');
+  mkdirSync(join(root, '.git', 'info'), { recursive: true });
   const existing = existsSync(exclude) ? readFileSync(exclude, 'utf8') : '';
-  const entry = '.plan/';
-  if (existing.includes(entry)) {
-    log('  ok    .plan/ already excluded from git');
+  const trimmed = new Set(existing.split('\n').map((l) => l.trim()));
+  const HEADER = '# Local-only planning artifacts (see AGENTS.md)';
+  const ENTRIES = ['/.plan/', '/AGENTS.md', '/CONTEXT.md'];
+  const missing = ENTRIES.filter((e) => !trimmed.has(e));
+  const hasHeader = trimmed.has(HEADER);
+  if (missing.length === 0) {
+    log('  ok    planning artifacts already excluded from git');
     return;
   }
-  appendFileSync(exclude, `\n# Local-only planning artifacts (see AGENTS.md)\n${entry}\n`);
-  log('  edit  .git/info/exclude -> .plan/');
+  let toAppend = '';
+  if (!hasHeader) {
+    const prefix = existing.length > 0 && !existing.endsWith('\n') ? '\n' : existing.length > 0 ? '\n' : '';
+    // For empty existing, still prefix a newline for consistency with prior behavior
+    toAppend += `${prefix}${HEADER}\n`;
+  } else if (existing.length > 0 && !existing.endsWith('\n')) {
+    toAppend += '\n';
+  }
+  for (const e of missing) {
+    toAppend += `${e}\n`;
+  }
+  // When file was empty and header was missing, ensure leading newline handling matches spec's single-header layout
+  // If existing is empty, toAppend currently is "HEADER\n...\n" — prepend newline to match prior single-header style
+  if (existing === '' && !hasHeader) {
+    toAppend = `\n${toAppend}`;
+  }
+  appendFileSync(exclude, toAppend);
+  for (const e of missing) {
+    log(`  edit  .git/info/exclude -> ${e}`);
+  }
 }
 
 function groupSkillsBySource() {
@@ -185,7 +208,7 @@ function main() {
   log('');
   copyScaffold(targetDir);
   createPlanningDirs(targetDir);
-  excludePlan(targetDir);
+  excludePlanningArtifacts(targetDir);
   installSkills(targetDir);
   printNextSteps(targetDir);
 }

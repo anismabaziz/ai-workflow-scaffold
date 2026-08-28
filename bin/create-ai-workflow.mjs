@@ -18,7 +18,7 @@ const noGit = flags.has('--no-git');
 const yes = flags.has('-y') || flags.has('--yes');
 const targetDir = positional[0] ? resolve(cwd, positional[0]) : cwd;
 
-const PLANNING_DIRS = ['tickets', 'spec', 'pull-requests', 'review-replies', 'blog'];
+const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews'];
 
 const FILES = ['AGENTS.md', 'CONTEXT.md', 'skills-lock.json'];
 const DIRS = ['examples', '.github'];
@@ -78,7 +78,8 @@ function createPlanningDirs(target) {
   for (const dir of PLANNING_DIRS) {
     mkdirSync(join(target, '.plan', dir), { recursive: true });
   }
-  log('  make  .plan/{tickets,spec,pull-requests,review-replies,blog}/');
+  // logs  make  .plan/{tickets,spec,pull-requests,review-replies,incoming-prs,outgoing-reviews}/ — derived from PLANNING_DIRS to keep single source
+  log(`  make  .plan/{${PLANNING_DIRS.join(',')}}/`);
 }
 
 function gitRoot(target) {

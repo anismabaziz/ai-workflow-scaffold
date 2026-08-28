@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, join, basename, relative } from 'node:path';
+import { dirname, resolve, join, relative } from 'node:path';
 import { existsSync, cpSync, mkdirSync, symlinkSync, readFileSync, appendFileSync, lstatSync, readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
@@ -10,13 +10,71 @@ const pkgRoot = resolve(here, '..');
 const cwd = process.cwd();
 
 const args = process.argv.slice(2);
-const flags = new Set(args.filter((a) => a.startsWith('-')));
-const positional = args.filter((a) => !a.startsWith('-'));
-const force = flags.has('--force');
-const noSkills = flags.has('--no-skills');
-const noGit = flags.has('--no-git');
-const yes = flags.has('-y') || flags.has('--yes');
-const targetDir = positional[0] ? resolve(cwd, positional[0]) : cwd;
+
+let force = false;
+let noSkills = false;
+let noGit = false;
+let yes = false;
+let agent = 'both';
+let targetDirArg = null;
+
+const VALID_AGENTS = ['universal', 'claude', 'both'];
+
+function validateAgent(val) {
+  if (!VALID_AGENTS.includes(val)) {
+    process.stderr.write(`error: --agent must be one of universal|claude|both (got "${val}")\n`);
+    process.exit(1);
+  }
+}
+
+for (let i = 0; i < args.length; i++) {
+  const a = args[i];
+  if (a === '--force') {
+    force = true;
+  } else if (a === '--no-skills') {
+    noSkills = true;
+  } else if (a === '--no-git') {
+    noGit = true;
+  } else if (a === '-y' || a === '--yes') {
+    yes = true;
+  } else if (a === '--agent') {
+    const val = args[i + 1];
+    if (!val || val.startsWith('-')) {
+      process.stderr.write(`error: --agent requires a value (universal|claude|both)\n`);
+      process.exit(1);
+    }
+    validateAgent(val);
+    agent = val;
+    i++;
+  } else if (a.startsWith('--agent=')) {
+    const val = a.slice('--agent='.length);
+    validateAgent(val);
+    agent = val;
+  } else if (a.startsWith('-')) {
+    process.stderr.write(`error: unknown flag "${a}"\n`);
+    process.exit(1);
+  } else {
+    if (!targetDirArg) targetDirArg = a;
+  }
+}
+
+const targetDir = targetDirArg ? resolve(cwd, targetDirArg) : cwd;
+
+const AGENT_ARGS = {
+  universal: ['--agent', 'universal'],
+  claude: ['--agent', 'claude-code'],
+  both: ['--agent', 'universal', '--agent', 'claude-code'],
+};
+
+function getSkillAgentArgs(chosen) {
+  return AGENT_ARGS[chosen] ?? AGENT_ARGS.both;
+}
+
+const AGENT_CHECK = {
+  universal: { dir: '.agents/skills', label: '.agents/skills/' },
+  claude: { dir: '.claude/skills', label: '.claude/skills/' },
+  both: { dir: '.agents/skills', label: '.agents/skills/' },
+};
 
 const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews'];
 
@@ -157,22 +215,30 @@ function installSkills(target) {
     return;
   }
   const lock = JSON.parse(readFileSync(join(target, 'skills-lock.json'), 'utf8'));
-  const installed = Object.keys(lock.skills).every((name) => existsSync(join(target, '.agents', 'skills', name)));
+  const skillNames = Object.keys(lock.skills);
+  const agentArgs = getSkillAgentArgs(agent);
+
+  const check = AGENT_CHECK[agent];
+  const installed = skillNames.every((name) => existsSync(join(target, check.dir, name)));
   if (installed) {
-    log('  ok    skills already installed in .agents/skills/');
-    ensureClaudeLinks(target);
+    log(`  ok    skills already installed in ${check.label}`);
+    if (agent === 'both') ensureClaudeLinks(target);
     return;
   }
+
   const groups = groupSkillsBySource();
   for (const [source, skills] of groups) {
-    const cmd = ['--yes', 'skills', 'add', source, '--skill', ...skills, '--agent', 'universal', '--agent', 'claude-code', '-y'];
-    log(`  run   npx skills add ${source} (${skills.length} skills)`);
+    const cmd = ['--yes', 'skills', 'add', source, '--skill', ...skills, ...agentArgs, '-y'];
+    const agentLabel = agentArgs.join(' ');
+    log(`  run   npx skills add ${source} (${skills.length} skills) ${agentLabel}`);
     const res = spawnSync('npx', cmd, { cwd: target, stdio: 'inherit' });
     if (res.status !== 0) {
       log(`  warn  skills install for ${source} exited ${res.status}`);
     }
   }
-  ensureClaudeLinks(target);
+  if (agent !== 'universal') {
+    ensureClaudeLinks(target);
+  }
 }
 
 function ensureClaudeLinks(target) {

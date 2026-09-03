@@ -16,19 +16,19 @@ Run the scaffold inside your project directory:
 npx create-ai-workflow
 ```
 
-This copies `AGENTS.md`, the `examples/` artifacts, the `.github/` workflow and
+This copies `AGENTS.md`, `CONTEXT.md`, the `examples/` artifacts, the `.github/` workflow and
 PR template, and `skills-lock.json`, creates the `.plan/` structure, excludes
 `.plan/` from git, and installs the skills for the universal and Claude Code
 agents. Pass a directory to scaffold somewhere else: `npx create-ai-workflow
 ./subdir`. Flags: `--force` (overwrite existing files), `--no-skills` (skip
-skill install), `--no-git` (leave git alone), `-y` (skip prompts).
+skill install), `--no-git` (leave git alone), `--agent <universal|claude|both>` (choose agent surface, default `both`), `--no-examples` (skip `examples/` copy), `-y` (skip prompts).
 
 ## The workflow at a glance
 
 1. **Spec.** When an idea or issue needs shaping, `/to-spec` turns the
-   conversation into a spec under `.plan/spec/`.
+   conversation into a spec under `.plan/spec/<branch>/<NN>-<summary>.md` where `<branch>` is the current branch with `/` replaced by `-` and `<NN>` is a zero-padded sequence per branch.
 2. **Tickets.** `/to-tickets` breaks the spec into one ticket per file under
-   `.plan/tickets/<date>-<summary>/`, each declaring what to build and what it
+   `.plan/tickets/<branch>/<NN>-<summary>/`, each declaring what to build and what it
    is blocked by.
 3. **Branch + implementation.** Create a branch named after the ticket
    (for example `feat/PF-12-api-contract`), implement, and keep the PR focused
@@ -96,7 +96,7 @@ copy the files manually:
 2. Keep `AGENTS.md` and create the local planning structure:
 
    ```bash
-   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/blog
+   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/incoming-prs .plan/outgoing-reviews
    ```
 
 3. If you keep `AGENTS.md` and `.plan/` out of git, exclude them from version
@@ -123,6 +123,7 @@ package.json               npm package: npx create-ai-workflow
 bin/
   create-ai-workflow.mjs   CLI that scaffolds the workflow into a project
 AGENTS.md                  Agent workflow rules (tickets, specs, PR bodies, review replies)
+CONTEXT.md                 Domain glossary template (local-only, maintained by domain-modeling)
 .github/
   pull_request_template.md Pull request body format
   workflows/
@@ -141,7 +142,8 @@ examples/                  Example artifacts showing the exact formats
   spec/
   pull-requests/
   review-replies/
-  blog/
+  incoming-prs/
+  outgoing-reviews/
 ```
 
 ## Contributing to this scaffold

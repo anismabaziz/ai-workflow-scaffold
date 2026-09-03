@@ -14,6 +14,7 @@ const args = process.argv.slice(2);
 let force = false;
 let noSkills = false;
 let noGit = false;
+let noExamples = false;
 let yes = false;
 let agent = 'both';
 let targetDirArg = null;
@@ -35,6 +36,8 @@ for (let i = 0; i < args.length; i++) {
     noSkills = true;
   } else if (a === '--no-git') {
     noGit = true;
+  } else if (a === '--no-examples' || a === '--without-examples') {
+    noExamples = true;
   } else if (a === '-y' || a === '--yes') {
     yes = true;
   } else if (a === '--agent') {
@@ -99,6 +102,7 @@ function copyScaffold(target) {
     log(`  copy  ${file}`);
   }
   for (const dir of DIRS) {
+    if (noExamples && dir === 'examples') continue;
     const src = join(pkgRoot, dir);
     const dest = join(target, dir);
     if (!existsSync(src)) continue;
@@ -108,6 +112,9 @@ function copyScaffold(target) {
     }
     copyDirFiltered(src, dest, SKIPPED_FILES);
     log(`  copy  ${dir}/`);
+  }
+  if (noExamples) {
+    log('  skip  examples/ (--no-examples)');
   }
 }
 

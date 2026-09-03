@@ -35,7 +35,7 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/productivity/grilling/SKILL.md",
-      "computedHash": "a16b2f661db6caf310d7e02dd0d069e597cb888873e210e66f641eae715c5f23"
+      "computedHash": "4dd886b0196bf43729d954ae326016f2bd9f5f79d892500b407c33a753362f14"
     },
     "implement": {
       "source": "mattpocock/skills",
@@ -56,16 +56,16 @@
       "computedHash": "e753a5da75292bbe59d302d89566bc2c53d0e73944da2f0e944a7578883c07d0"
     },
     "to-spec": {
-      "source": "mattpocock/skills",
+      "source": "anismabaziz/ai-workflow-scaffold",
       "sourceType": "github",
-      "skillPath": "skills/engineering/to-spec/SKILL.md",
-      "computedHash": "3fa1a0695d4ea242fae9e569e4d22aa1788623197abb33bfadafae7315789bbf"
+      "skillPath": "skills/to-spec/SKILL.md",
+      "computedHash": "0c7267500b334e33890bf340c357acf33924631285146a70ac193b90c524e8de"
     },
     "to-tickets": {
-      "source": "mattpocock/skills",
+      "source": "anismabaziz/ai-workflow-scaffold",
       "sourceType": "github",
-      "skillPath": "skills/engineering/to-tickets/SKILL.md",
-      "computedHash": "bf5e6ebcb4f1272de0c188d5b3901f265a03d1fa9935a21a7a56938e21e2e761"
+      "skillPath": "skills/to-tickets/SKILL.md",
+      "computedHash": "ab80fac48855575d5b3a1584df49ed5d293940b06c681dafccdc25cb43537dd0"
     },
     "unslop": {
       "source": "poteto/noodle",

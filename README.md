@@ -31,7 +31,7 @@ Options:
 
 - `[target-dir]` — directory to scaffold into. Defaults to the current directory. Example: `npx create-ai-workflow ./my-project`.
 - `--force` — overwrite existing files (`AGENTS.md`, `CONTEXT.md`, `examples/`, etc.) if they already exist.
-- `--no-skills` — skip installing skills with `npx skills`. Useful if you manage skills manually.
+- `--no-skills` — skip installing skills with `npx skills` and do not copy `skills-lock.json`. Useful if you manage skills manually.
 - `--no-git` — do not touch `.git/info/exclude`. `.plan/` will not be auto-excluded.
 - `--no-examples` / `--without-examples` — do not copy the `examples/` folder.
 - `--agent <universal|claude|both>` — which agent surface to install skills for. Default is `both`. Also supports `--agent=universal`.

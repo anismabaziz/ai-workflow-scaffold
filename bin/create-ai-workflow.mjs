@@ -91,6 +91,10 @@ function log(msg) {
 
 function copyScaffold(target) {
   for (const file of FILES) {
+    if (noSkills && file === 'skills-lock.json') {
+      log('  skip  skills-lock.json (--no-skills)');
+      continue;
+    }
     const src = join(pkgRoot, file);
     const dest = join(target, file);
     if (!existsSync(src)) continue;

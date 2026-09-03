@@ -19,9 +19,33 @@ npx create-ai-workflow
 This copies `AGENTS.md`, `CONTEXT.md`, the `examples/` artifacts, the `.github/` workflow and
 PR template, and `skills-lock.json`, creates the `.plan/` structure, excludes
 `.plan/` from git, and installs the skills for the universal and Claude Code
-agents. Pass a directory to scaffold somewhere else: `npx create-ai-workflow
-./subdir`. Flags: `--force` (overwrite existing files), `--no-skills` (skip
-skill install), `--no-git` (leave git alone), `--agent <universal|claude|both>` (choose agent surface, default `both`), `--no-examples` (skip `examples/` copy), `-y` (skip prompts).
+agents.
+
+Usage:
+
+```bash
+npx create-ai-workflow [target-dir] [options]
+```
+
+Options:
+
+- `[target-dir]` — directory to scaffold into. Defaults to the current directory. Example: `npx create-ai-workflow ./my-project`.
+- `--force` — overwrite existing files (`AGENTS.md`, `CONTEXT.md`, `examples/`, etc.) if they already exist.
+- `--no-skills` — skip installing skills with `npx skills`. Useful if you manage skills manually.
+- `--no-git` — do not touch `.git/info/exclude`. `.plan/` will not be auto-excluded.
+- `--no-examples` / `--without-examples` — do not copy the `examples/` folder.
+- `--agent <universal|claude|both>` — which agent surface to install skills for. Default is `both`. Also supports `--agent=universal`.
+- `-y` / `--yes` — skip confirmation prompts when installing skills (passed through to `npx skills add`).
+
+Examples:
+
+```bash
+npx create-ai-workflow                 # scaffold into current directory
+npx create-ai-workflow ./my-project    # scaffold into a new folder
+npx create-ai-workflow --force         # overwrite existing scaffold files
+npx create-ai-workflow --agent universal --no-examples  # minimal install
+npx create-ai-workflow --no-skills --no-git -y          # copy files only
+```
 
 ## The workflow at a glance
 
@@ -96,7 +120,7 @@ copy the files manually:
 2. Keep `AGENTS.md` and create the local planning structure:
 
    ```bash
-   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/incoming-prs .plan/outgoing-reviews
+   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/incoming-prs .plan/outgoing-reviews .plan/blog
    ```
 
 3. If you keep `AGENTS.md` and `.plan/` out of git, exclude them from version
@@ -144,6 +168,7 @@ examples/                  Example artifacts showing the exact formats
   review-replies/
   incoming-prs/
   outgoing-reviews/
+  blog/
 ```
 
 ## Contributing to this scaffold

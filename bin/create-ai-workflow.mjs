@@ -79,7 +79,7 @@ const AGENT_CHECK = {
   both: { dir: '.agents/skills', label: '.agents/skills/' },
 };
 
-const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews'];
+const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews','blog'];
 
 const FILES = ['AGENTS.md', 'CONTEXT.md', 'skills-lock.json'];
 const DIRS = ['examples', '.github'];

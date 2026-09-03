@@ -7,7 +7,7 @@ codebase context, and not committed (all stay local to the machine).
 Agents do not treat them as product code. `CONTEXT.md` is the domain glossary,
 maintained by the `domain-modeling` skill. What agents may read and write
 inside `.plan/` is defined by the workflows below (tickets, specs, PR bodies,
-review replies) plus `.plan/other/` for everything else; anything not covered
+review replies, blog drafts) plus `.plan/other/` for everything else; anything not covered
 stays untouched. The committed `examples/` folder shows the exact formats these
 artifacts use.
 
@@ -108,6 +108,27 @@ Rules:
 - The reviewer is distinct from the lead (per the PR template).
 - Never merge the two axes into a single verdict: a change can pass one and
   fail the other.
+
+## Blog drafts
+
+Keep project-related writing under `.plan/blog/`, one `.md` file per post. This folder is local-only like the rest of `.plan/`. Draft in any order; when a post is published, move the file to your blog source. Name files `<NN>-<slug>.md` where `<NN>` is a zero-padded number (`01`, `02`, …) — for example `01-my-post.md`. The committed `examples/blog/01-example-draft.md` shows the exact format. Starting template:
+
+```markdown
+# Title
+
+Status: draft
+
+## The hook
+Why does this matter? What will the reader get from it?
+
+## The story
+- What problem were you solving?
+- What did you try, what surprised you?
+- What ended up working?
+
+## The takeaway
+What would you do differently? What should the reader steal?
+```
 
 ## Other
 

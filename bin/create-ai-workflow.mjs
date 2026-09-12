@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, join, relative } from 'node:path';
-import { existsSync, cpSync, mkdirSync, symlinkSync, readFileSync, appendFileSync, lstatSync, readdirSync } from 'node:fs';
+import { dirname, resolve, join } from 'node:path';
+import { existsSync, cpSync, mkdirSync, symlinkSync, readFileSync, appendFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -79,11 +79,10 @@ const AGENT_CHECK = {
   both: { dir: '.agents/skills', label: '.agents/skills/' },
 };
 
-const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews','blog'];
+const PLANNING_DIRS = ['tickets','spec','pull-requests','review-replies','incoming-prs','outgoing-reviews','blog','other'];
 
 const FILES = ['AGENTS.md', 'CONTEXT.md', 'skills-lock.json'];
-const DIRS = ['examples', '.github'];
-const SKIPPED_FILES = ['workflows/publish.yml'];
+const DIRS = ['examples'];
 
 function log(msg) {
   process.stdout.write(`${msg}\n`);
@@ -114,31 +113,11 @@ function copyScaffold(target) {
       log(`  skip  ${dir}/ (exists, use --force to overwrite)`);
       continue;
     }
-    copyDirFiltered(src, dest, SKIPPED_FILES);
+    cpSync(src, dest, { recursive: true, force: true });
     log(`  copy  ${dir}/`);
   }
   if (noExamples) {
     log('  skip  examples/ (--no-examples)');
-  }
-}
-
-function copyDirFiltered(src, dest, skipped) {
-  copyDirFilteredRec(src, dest, skipped, src);
-}
-
-function copyDirFilteredRec(src, dest, skipped, root) {
-  const rel = (p) => relative(root, p);
-  if (!existsSync(dest)) mkdirSync(dest, { recursive: true });
-  for (const entry of readdirSync(src)) {
-    const s = join(src, entry);
-    const r = rel(s);
-    if (skipped.includes(r)) continue;
-    const d = join(dest, entry);
-    if (lstatSync(s).isDirectory()) {
-      copyDirFilteredRec(s, d, skipped, root);
-    } else {
-      cpSync(s, d, { force: true });
-    }
   }
 }
 

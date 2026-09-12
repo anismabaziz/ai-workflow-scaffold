@@ -5,7 +5,7 @@ these files into any new project (TypeScript, Python, anything else) and run
 the same ticket → spec → branch → PR → review → merge loop on every change.
 
 This scaffold has no application code. It ships the workflow rules, the agent
-skills, the pull-request template, the secret scan, and example artifacts in
+skills, the pull-request example, and example artifacts in
 the exact formats the workflow produces.
 
 ## Quick start
@@ -16,8 +16,8 @@ Run the scaffold inside your project directory:
 npx create-ai-workflow
 ```
 
-This copies `AGENTS.md`, `CONTEXT.md`, the `examples/` artifacts, the `.github/` workflow and
-PR template, and `skills-lock.json`, creates the `.plan/` structure, excludes
+This copies `AGENTS.md`, `CONTEXT.md`, the `examples/` artifacts,
+and `skills-lock.json`, creates the `.plan/` structure, excludes
 `.plan/` from git, and installs the skills for the universal and Claude Code
 agents.
 
@@ -59,7 +59,7 @@ npx create-ai-workflow --no-skills --no-git -y          # copy files only
    on one result.
 4. **Pull request.** Write the PR body under
    `.plan/pull-requests/<branch-with-hyphens>.md` following
-   `.github/pull_request_template.md`. Proof of execution is mandatory.
+   `examples/pull-requests/example-pr.md`. Proof of execution is mandatory.
 5. **Review.** Reviewer comments go under
    `.plan/review-replies/<branch>/` with one numbered file per review round.
    Reply in the reserved sections once the resolving ticket is implemented.
@@ -120,19 +120,24 @@ copy the files manually:
 2. Keep `AGENTS.md` and create the local planning structure:
 
    ```bash
-   mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/incoming-prs .plan/outgoing-reviews .plan/blog
+    mkdir -p .plan/tickets .plan/spec .plan/pull-requests .plan/review-replies .plan/incoming-prs .plan/outgoing-reviews .plan/blog .plan/other
    ```
 
 3. If you keep `AGENTS.md` and `.plan/` out of git, exclude them from version
    control (for example in `.git/info/exclude`). Do not commit planning
    artifacts as product code. The `examples/` folder shows the exact formats
    these artifacts use.
-4. Add your CI workflow(s) under `.github/workflows/`. The `secret-scan`
-   workflow is included and runs gitleaks on pushes and pull requests.
-5. Write the team conventions (branch naming, who merges, definition of done)
+4. Add your CI workflow(s) under `.github/workflows/` (for example a secret
+   scan with gitleaks on pushes and pull requests).
+5. Point `AGENTS.md` at your pull request template. After scaffolding, the
+   Pull requests section points to `examples/pull-requests/example-pr.md`.
+   If your project has its own template (for example
+   `.github/pull_request_template.md`), update that path in `AGENTS.md` so
+   agents follow your format instead of the example.
+6. Write the team conventions (branch naming, who merges, definition of done)
    where your team reads them. `AGENTS.md` already pins the agent-side
    workflow.
-6. Start with `/to-spec`, then `/to-tickets`, then pick a ticket and create
+7. Start with `/to-spec`, then `/to-tickets`, then pick a ticket and create
    your branch.
 
 Skills ship with the repo. If you only copied the workflow files, not the
@@ -148,10 +153,7 @@ bin/
   create-ai-workflow.mjs   CLI that scaffolds the workflow into a project
 AGENTS.md                  Agent workflow rules (tickets, specs, PR bodies, review replies)
 CONTEXT.md                 Domain glossary template (local-only, maintained by domain-modeling)
-.github/
-  pull_request_template.md Pull request body format
-  workflows/
-    secret-scan.yml        Gitleaks secret scan
+.github/                   Scaffold's own CI and PR template (not scaffolded)
 .agents/skills/            Skills, universal format, managed via npx (12)
 .claude/skills/            Symlinks to .agents/skills for Claude Code
 skills-lock.json           Pinned skill sources and versions
@@ -169,10 +171,11 @@ examples/                  Example artifacts showing the exact formats
   incoming-prs/
   outgoing-reviews/
   blog/
+  other/                   Notes, reports, exports, anything outside the workflows
 ```
 
 ## Contributing to this scaffold
 
-If the workflow changes, update `AGENTS.md`, the PR template and the example
+If the workflow changes, update `AGENTS.md`, the PR example and the example
 artifacts together, then refresh the skills with `npx skills update`. Apply
 the `unslop` skill to any human-facing text.

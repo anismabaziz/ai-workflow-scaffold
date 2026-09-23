@@ -16,11 +16,19 @@ artifacts use.
 Never mention planning artifacts anywhere in the codebase or in any committed
 content: code, tests, comments, docs, commit messages, or GitHub PR
 descriptions. That includes ticket numbers or names (e.g.
-`02-...`, `LPH-...`), ticket/spec file paths, `.plan/` paths, and
+`02-...`, `TKT-...`), ticket/spec file paths, `.plan/` paths, and
 `CONTEXT.md`. If you need to explain a change, describe the feature itself —
 what it does and why — without linking it to a planning artifact.
 
 The artifacts stay local. The codebase stays clean.
+
+## Process vocabulary — forbidden in committed content
+
+The ban above covers internal process vocabulary too. Words like seam and
+tracer bullet come from planning and skill workflows, so they never appear in
+committed content either: not in code, tests, comments, docs, commit messages,
+or PR descriptions. When you need the concept, say it in plain domain language
+instead. Storage access goes through a single place in the repository. If you are unsure whether a word is process jargon, leave it out.
 
 ## Workflow for refactors and features
 
@@ -127,14 +135,17 @@ Keep project-related writing under `.plan/blog/`, one `.md` file per post. This 
 Status: draft
 
 ## The hook
+
 Why does this matter? What will the reader get from it?
 
 ## The story
+
 - What problem were you solving?
 - What did you try, what surprised you?
 - What ended up working?
 
 ## The takeaway
+
 What would you do differently? What should the reader steal?
 ```
 

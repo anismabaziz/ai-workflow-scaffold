@@ -97,6 +97,10 @@ function copyScaffold(target) {
     const src = join(pkgRoot, file);
     const dest = join(target, file);
     if (!existsSync(src)) continue;
+    if (file === 'CONTEXT.md' && existsSync(dest)) {
+      log('  skip  CONTEXT.md (exists, never overwritten)');
+      continue;
+    }
     if (existsSync(dest) && !force) {
       log(`  skip  ${file} (exists, use --force to overwrite)`);
       continue;
